@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public abstract class Skill : MonoBehaviour
 {
@@ -12,6 +13,13 @@ public abstract class Skill : MonoBehaviour
 
     protected Fighter emitter;
     protected Fighter receiver;
+
+    protected Queue<string> messages;
+
+    void Awake()
+    {
+        this.messages = new Queue<string>();
+    }
 
     private void Animate()
     {
@@ -35,6 +43,14 @@ public abstract class Skill : MonoBehaviour
     {
         this.emitter = _emitter;
         this.receiver = _receiver;
+    }
+
+    public string GetNextMessage()
+    {
+        if (this.messages.Count != 0)
+            return this.messages.Dequeue();
+        else
+            return null;
     }
 
     protected abstract void OnRun();

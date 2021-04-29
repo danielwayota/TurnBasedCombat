@@ -171,6 +171,7 @@ MonoBehaviour:
     type: 3}
   amount: 0.2
   modType: 2
+  critChance: 0
 --- !u!1 &31933569
 GameObject:
   m_ObjectHideFlags: 0
@@ -351,6 +352,70 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1 &277319811
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 277319812}
+  - component: {fileID: 277319814}
+  - component: {fileID: 277319813}
+  m_Layer: 0
+  m_Name: Enrage
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &277319812
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 277319811}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 994392626}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &277319813
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 277319811}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 573aa775290a2a748a5b21c04e592957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 0
+  amount: 10
+--- !u!114 &277319814
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 277319811}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7428d4c1d0b73c41863b48e9f741a0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillName: Enrage
+  animationDuration: 2
+  selfInflicted: 1
+  effectPrfb: {fileID: 4935495943547224871, guid: 9f7a3ae2bf5b48b439f7a877c85603e0,
+    type: 3}
+  message: '{receiver} attack rises!'
 --- !u!1 &378704345
 GameObject:
   m_ObjectHideFlags: 0
@@ -399,12 +464,77 @@ MonoBehaviour:
   idName: Fernando
   statusPanel: {fileID: 1581273397}
   combatManager: {fileID: 794994002}
+  statusMods: []
 --- !u!224 &390625078 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7381918603428982122, guid: ffa40bcafefbff44d8bc0ab8a5e793b6,
     type: 3}
   m_PrefabInstance: {fileID: 7381918603080309340}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &434862558
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 434862559}
+  - component: {fileID: 434862561}
+  - component: {fileID: 434862560}
+  m_Layer: 0
+  m_Name: Weaken
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &434862559
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 434862558}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 994392626}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &434862560
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 434862558}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 573aa775290a2a748a5b21c04e592957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 1
+  amount: -10
+--- !u!114 &434862561
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 434862558}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7428d4c1d0b73c41863b48e9f741a0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillName: Weaken
+  animationDuration: 2
+  selfInflicted: 0
+  effectPrfb: {fileID: 4935495943547224871, guid: 4642a3248b4f72f47b2c6eaf1b473471,
+    type: 3}
+  message: '{receiver} loses defense!'
 --- !u!1 &458972477
 GameObject:
   m_ObjectHideFlags: 0
@@ -581,6 +711,7 @@ MonoBehaviour:
     type: 3}
   amount: -30
   modType: 0
+  critChance: 0
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -904,7 +1035,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &869525052
 Transform:
   m_ObjectHideFlags: 0
@@ -938,6 +1069,7 @@ MonoBehaviour:
     type: 3}
   amount: -40
   modType: 1
+  critChance: 0
 --- !u!1 &876819696
 GameObject:
   m_ObjectHideFlags: 0
@@ -1155,6 +1287,7 @@ MonoBehaviour:
     type: 3}
   amount: -35
   modType: 0
+  critChance: 0.102
 --- !u!1 &994392625
 GameObject:
   m_ObjectHideFlags: 0
@@ -1185,6 +1318,8 @@ Transform:
   - {fileID: 972765287}
   - {fileID: 9795831}
   - {fileID: 869525052}
+  - {fileID: 277319812}
+  - {fileID: 434862559}
   m_Father: {fileID: 1706659742}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1658,6 +1793,7 @@ MonoBehaviour:
     type: 3}
   amount: -40
   modType: 0
+  critChance: 0
 --- !u!1 &1538744453
 GameObject:
   m_ObjectHideFlags: 0
@@ -2148,6 +2284,7 @@ MonoBehaviour:
   idName: Antonio
   statusPanel: {fileID: 7381918603080309341}
   combatManager: {fileID: 794994002}
+  statusMods: []
   skillPanel: {fileID: 458972482}
 --- !u!1 &1721865357
 GameObject:
