@@ -4,6 +4,9 @@ public class PlayerFighter : Fighter
 {
     [Header("UI")]
     public PlayerSkillPanel skillPanel;
+    public EnemiesPanel enemiesPanel;
+
+    private Skill skillToBeExecuted;
 
     void Awake()
     {
@@ -12,7 +15,7 @@ public class PlayerFighter : Fighter
 
     public override void InitTurn()
     {
-        this.skillPanel.Show();
+        this.skillPanel.ShowForPlayer(this);
 
         for (int i = 0; i < this.skills.Length; i++)
         {
@@ -22,19 +25,33 @@ public class PlayerFighter : Fighter
 
     /// ================================================
     /// <summary>
-    /// Se llama desde los botones del panel de habilidades.
+    /// Se llama desde EnemiesPanel.
     /// </summary>
     /// <param name="index"></param>
     public void ExecuteSkill(int index)
     {
+        this.skillToBeExecuted = this.skills[index];
+
+        if (this.skillToBeExecuted.selfInflicted)
+        {
+            this.skillToBeExecuted.SetEmitterAndReceiver(this, this);
+            this.combatManager.OnFighterSkill(this.skillToBeExecuted);
+            this.skillPanel.Hide();
+        }
+        else
+        {
+            Fighter[] enemies = this.combatManager.GetOpposingTeam();
+            this.enemiesPanel.Show(this, enemies);
+        }
+    }
+
+    public void SetTargetAndAttack(Fighter enemyFigther)
+    {
+        this.skillToBeExecuted.SetEmitterAndReceiver(this, enemyFigther);
+
+        this.combatManager.OnFighterSkill(this.skillToBeExecuted);
+
         this.skillPanel.Hide();
-
-        Skill skill = this.skills[index];
-
-        skill.SetEmitterAndReceiver(
-            this, this.combatManager.GetOpposingFighter()
-        );
-
-        this.combatManager.OnFighterSkill(skill);
+        this.enemiesPanel.Hide();
     }
 }

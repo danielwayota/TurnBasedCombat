@@ -26,6 +26,12 @@ TextureImporter:
   - first:
       213: -8426566893265245192
     second: Skill_Enrage
+  - first:
+      213: 7142408764567536387
+    second: Juan
+  - first:
+      213: 2978547045873465714
+    second: Mordiscos
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -278,7 +284,7 @@ TextureImporter:
         width: 8
         height: 7
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -286,6 +292,48 @@ TextureImporter:
       bones: []
       spriteID: 8fbabd27e02de0b80800000000000000
       internalID: -8426566893265245192
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Juan
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 48
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3034fa4edeeee1360800000000000000
+      internalID: 7142408764567536387
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mordiscos
+      rect:
+        serializedVersion: 2
+        x: 8
+        y: 48
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 279b318d1cce55920800000000000000
+      internalID: 2978547045873465714
       vertices: []
       indices: 
       edges: []

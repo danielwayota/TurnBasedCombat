@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Linq;
 
 public enum CombatStatus
 {
@@ -12,7 +13,10 @@ public enum CombatStatus
 
 public class CombatManager : MonoBehaviour
 {
-    public Fighter[] fighters;
+    public Fighter[] playerTeam;
+    public Fighter[] enemyTeam;
+
+    private Fighter[] fighters;
     private int fighterIndex;
 
     private bool isCombatActive;
@@ -24,6 +28,14 @@ public class CombatManager : MonoBehaviour
     void Start()
     {
         LogPanel.Write("Battle initiated.");
+
+        this.fighters = new Fighter[] {
+            this.playerTeam[0], this.playerTeam[1],
+            this.enemyTeam[0], this.enemyTeam[1]
+        };
+
+        // Usando Linq
+        // this.fighters = this.playerTeam.Concat(this.enemyTeam).ToArray();
 
         foreach (var fgtr in this.fighters)
         {
@@ -77,29 +89,55 @@ public class CombatManager : MonoBehaviour
                     break;
 
                 case CombatStatus.CHECK_FOR_VICTORY:
-                    foreach (var fgtr in this.fighters)
+                    bool arePlayersAlive = false;
+                    foreach (var figther in this.playerTeam)
                     {
-                        if (fgtr.isAlive == false)
-                        {
-                            this.isCombatActive = false;
-
-                            LogPanel.Write("Victory!");
-                        }
-                        else
-                        {
-                            this.combatStatus = CombatStatus.NEXT_TURN;
-                        }
+                        arePlayersAlive |= figther.isAlive;
                     }
+
+                    // if (this.playerTeam[0].isAlive OR this.playerTeam[1].isAlive)
+
+                    bool areEnemiesAlive = false;
+                    foreach (var figther in this.enemyTeam)
+                    {
+                        areEnemiesAlive |= figther.isAlive;
+                    }
+
+                    bool victory = areEnemiesAlive == false;
+                    bool defeat  = arePlayersAlive == false;
+
+                    if (victory)
+                    {
+                        LogPanel.Write("Victoria!");
+                        this.isCombatActive = false;
+                    }
+
+                    if (defeat)
+                    {
+                        LogPanel.Write("Derrota!");
+                        this.isCombatActive = false;
+                    }
+
+                    if (this.isCombatActive)
+                    {
+                        this.combatStatus = CombatStatus.NEXT_TURN;
+                    }
+
                     yield return null;
                     break;
                 case CombatStatus.NEXT_TURN:
                     yield return new WaitForSeconds(1f);
-                    this.fighterIndex = (this.fighterIndex + 1) % this.fighters.Length;
 
-                    var currentTurn = this.fighters[this.fighterIndex];
+                    Fighter current = null;
 
-                    LogPanel.Write($"{currentTurn.idName} has the turn.");
-                    currentTurn.InitTurn();
+                    do {
+                        this.fighterIndex = (this.fighterIndex + 1) % this.fighters.Length;
+
+                        current = this.fighters[this.fighterIndex];
+                    } while (current.isAlive == false);
+
+                    LogPanel.Write($"{current.idName} has the turn.");
+                    current.InitTurn();
 
                     this.combatStatus = CombatStatus.WAITING_FOR_FIGHTER;
 
@@ -110,10 +148,25 @@ public class CombatManager : MonoBehaviour
 
     public Fighter GetOpposingFighter()
     {
-        if (this.fighterIndex == 0) {
+        if (this.fighterIndex == 0)
+        {
             return this.fighters[1];
-        } else {
+        }
+        else
+        {
             return this.fighters[0];
+        }
+    }
+
+    public Fighter[] GetOpposingTeam()
+    {
+        if (this.fighterIndex == 0 || this.fighterIndex == 1)
+        {
+            return this.enemyTeam;
+        }
+        else
+        {
+            return this.playerTeam;
         }
     }
 

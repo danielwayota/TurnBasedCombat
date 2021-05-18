@@ -19,8 +19,14 @@ public class EnemyFighter : Fighter
 
         Skill skill = this.skills[Random.Range(0, this.skills.Length)];
 
+        Fighter target = null;
+        do {
+            Fighter[] players = this.combatManager.GetOpposingTeam();
+            target = players[Random.Range(0, players.Length)];
+        } while (target.isAlive == false);
+
         skill.SetEmitterAndReceiver(
-            this, this.combatManager.GetOpposingFighter()
+            this, target
         );
 
         this.combatManager.OnFighterSkill(skill);
