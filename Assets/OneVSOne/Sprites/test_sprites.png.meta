@@ -132,10 +132,10 @@ TextureImporter:
       name: Antonio
       rect:
         serializedVersion: 2
-        x: 0
-        y: 56
-        width: 8
-        height: 8
+        x: 1
+        y: 32
+        width: 13
+        height: 15
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -153,10 +153,10 @@ TextureImporter:
       name: Enemy_Ghost
       rect:
         serializedVersion: 2
-        x: 8
-        y: 56
-        width: 8
-        height: 8
+        x: 1
+        y: 16
+        width: 14
+        height: 16
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -300,12 +300,12 @@ TextureImporter:
       name: Juan
       rect:
         serializedVersion: 2
-        x: 0
-        y: 48
-        width: 8
-        height: 8
+        x: 18
+        y: 32
+        width: 12
+        height: 15
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -321,12 +321,12 @@ TextureImporter:
       name: Mordiscos
       rect:
         serializedVersion: 2
-        x: 8
-        y: 48
-        width: 8
-        height: 8
+        x: 16
+        y: 16
+        width: 15
+        height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
