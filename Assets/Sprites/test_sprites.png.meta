@@ -32,6 +32,12 @@ TextureImporter:
   - first:
       213: 2978547045873465714
     second: Mordiscos
+  - first:
+      213: 1948013581542784641
+    second: Curse_Effect
+  - first:
+      213: 5496771705419483318
+    second: Paralize_Effect
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -334,6 +340,48 @@ TextureImporter:
       bones: []
       spriteID: 279b318d1cce55920800000000000000
       internalID: 2978547045873465714
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Curse_Effect
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 40
+        width: 8
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 18e7e79080cb80b10800000000000000
+      internalID: 1948013581542784641
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Paralize_Effect
+      rect:
+        serializedVersion: 2
+        x: 41
+        y: 40
+        width: 7
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6b842f03eb4784c40800000000000000
+      internalID: 5496771705419483318
       vertices: []
       indices: 
       edges: []

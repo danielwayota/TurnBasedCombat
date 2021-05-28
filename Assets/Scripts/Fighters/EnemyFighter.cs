@@ -5,7 +5,7 @@ public class EnemyFighter : Fighter
 {
     void Awake()
     {
-        this.stats = new Stats(20, 50, 40, 30, 60);
+        this.stats = new Stats(20, 50, 40, 30, 60, 15);
     }
 
     public override void InitTurn()
@@ -18,16 +18,20 @@ public class EnemyFighter : Fighter
         yield return new WaitForSeconds(1f);
 
         Skill skill = this.skills[Random.Range(0, this.skills.Length)];
+        skill.SetEmitter(this);
 
-        Fighter target = null;
-        do {
-            Fighter[] players = this.combatManager.GetOpposingTeam();
-            target = players[Random.Range(0, players.Length)];
-        } while (target.isAlive == false);
+        if (skill.needsManualTargeting)
+        {
+            Fighter[] targets = this.GetSkillTargets(skill);
 
-        skill.SetEmitterAndReceiver(
-            this, target
-        );
+            Fighter target = targets[Random.Range(0, targets.Length)];
+
+            skill.AddReceiver(target);
+        }
+        else
+        {
+            this.AutoConfigureSkillTargeting(skill);
+        }
 
         this.combatManager.OnFighterSkill(skill);
     }

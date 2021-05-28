@@ -15,9 +15,9 @@ public class HealthModSkill : Skill
     [Range(0f, 1f)]
     public float critChance = 0;
 
-    protected override void OnRun()
+    protected override void OnRun(Fighter receiver)
     {
-        float amount = this.GetModification();
+        float amount = this.GetModification(receiver);
 
         float dice = Random.Range(0f, 1f);
 
@@ -27,16 +27,16 @@ public class HealthModSkill : Skill
             this.messages.Enqueue("Critical hit!");
         }
 
-        this.receiver.ModifyHealth(amount);
+        receiver.ModifyHealth(amount);
     }
 
-    public float GetModification()
+    public float GetModification(Fighter receiver)
     {
         switch (this.modType)
         {
             case HealthModType.STAT_BASED:
                 Stats emitterStats = this.emitter.GetCurrentStats();
-                Stats receiverStats = this.receiver.GetCurrentStats();
+                Stats receiverStats = receiver.GetCurrentStats();
 
                 // Fórmula: https://bulbapedia.bulbagarden.net/wiki/Damage
                 float rawDamage = (((2 * emitterStats.level) / 5) + 2) * this.amount * (emitterStats.attack / receiverStats.deffense);
@@ -45,7 +45,7 @@ public class HealthModSkill : Skill
             case HealthModType.FIXED:
                 return this.amount;
             case HealthModType.PERCENTAGE:
-                Stats rStats = this.receiver.GetCurrentStats();
+                Stats rStats = receiver.GetCurrentStats();
 
                 return rStats.maxHealth * this.amount;
         }

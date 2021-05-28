@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System.Linq;
+using System.Collections.Generic;
 
 public enum CombatStatus
 {
@@ -8,13 +8,14 @@ public enum CombatStatus
     FIGHTER_ACTION,
     CHECK_ACTION_MESSAGES,
     CHECK_FOR_VICTORY,
-    NEXT_TURN
+    NEXT_TURN,
+    CHECK_FIGHTER_STATUS_CONDITION
 }
 
 public class CombatManager : MonoBehaviour
 {
-    public Fighter[] playerTeam;
-    public Fighter[] enemyTeam;
+    private Fighter[] playerTeam;
+    private Fighter[] enemyTeam;
 
     private Fighter[] fighters;
     private int fighterIndex;
@@ -25,28 +26,73 @@ public class CombatManager : MonoBehaviour
 
     private Skill currentFighterSkill;
 
+    private List<Fighter> returnBuffer;
+
     void Start()
     {
+        this.returnBuffer = new List<Fighter>();
+
+        this.fighters = GameObject.FindObjectsOfType<Fighter>();
+
+        this.SortFightersBySpeed();
+        this.MakeTeams();
+
         LogPanel.Write("Battle initiated.");
-
-        this.fighters = new Fighter[] {
-            this.playerTeam[0], this.playerTeam[1],
-            this.enemyTeam[0], this.enemyTeam[1]
-        };
-
-        // Usando Linq
-        // this.fighters = this.playerTeam.Concat(this.enemyTeam).ToArray();
-
-        foreach (var fgtr in this.fighters)
-        {
-            fgtr.combatManager = this;
-        }
 
         this.combatStatus = CombatStatus.NEXT_TURN;
 
         this.fighterIndex = -1;
         this.isCombatActive = true;
         StartCoroutine(this.CombatLoop());
+    }
+
+    private void SortFightersBySpeed()
+    {
+        bool sorted = false;
+        while (!sorted)
+        {
+            sorted = true;
+
+            for (int i = 0; i < this.fighters.Length - 1; i++)
+            {
+                Fighter a = this.fighters[i];
+                Fighter b = this.fighters[i + 1];
+
+                float aSpeed = a.GetCurrentStats().speed;
+                float bSpeed = b.GetCurrentStats().speed;
+
+                if (bSpeed > aSpeed)
+                {
+                    this.fighters[i] = b;
+                    this.fighters[i + 1] = a;
+
+                    sorted = false;
+                }
+            }
+        }
+    }
+
+    private void MakeTeams()
+    {
+        List<Fighter> playersBuffer = new List<Fighter>();
+        List<Fighter> enemiesBuffer = new List<Fighter>();
+
+        foreach (var fgtr in this.fighters)
+        {
+            if (fgtr.team == Team.PLAYERS)
+            {
+                playersBuffer.Add(fgtr);
+            }
+            else if (fgtr.team == Team.ENEMIES)
+            {
+                enemiesBuffer.Add(fgtr);
+            }
+
+            fgtr.combatManager = this;
+        }
+
+        this.playerTeam = playersBuffer.ToArray();
+        this.enemyTeam = enemiesBuffer.ToArray();
     }
 
     IEnumerator CombatLoop()
@@ -136,38 +182,94 @@ public class CombatManager : MonoBehaviour
                         current = this.fighters[this.fighterIndex];
                     } while (current.isAlive == false);
 
-                    LogPanel.Write($"{current.idName} has the turn.");
-                    current.InitTurn();
+                    this.combatStatus = CombatStatus.CHECK_FIGHTER_STATUS_CONDITION;
+
+                    break;
+
+                case CombatStatus.CHECK_FIGHTER_STATUS_CONDITION:
+                    var currentFighter = this.fighters[this.fighterIndex];
+
+                    var statusCondition = currentFighter.GetCurrentStatusCondition();
+
+                    if (statusCondition != null)
+                    {
+                        statusCondition.Apply();
+
+                        while (true)
+                        {
+                            string nextSCMessage = statusCondition.GetNextMessage();
+                            if (nextSCMessage == null)
+                            {
+                                break;
+                            }
+
+                            LogPanel.Write(nextSCMessage);
+                            yield return new WaitForSeconds(2f);
+                        }
+
+                        if (statusCondition.BlocksTurn())
+                        {
+                            this.combatStatus = CombatStatus.CHECK_FOR_VICTORY;
+                            break;
+                        }
+                    }
+
+                    LogPanel.Write($"{currentFighter.idName} has the turn.");
+                    currentFighter.InitTurn();
 
                     this.combatStatus = CombatStatus.WAITING_FOR_FIGHTER;
-
                     break;
             }
         }
     }
 
-    public Fighter GetOpposingFighter()
+    public Fighter[] FilterJustAlive(Fighter[] team)
     {
-        if (this.fighterIndex == 0)
+        this.returnBuffer.Clear();
+
+        foreach (var fgtr in team)
         {
-            return this.fighters[1];
+            if (fgtr.isAlive)
+            {
+                this.returnBuffer.Add(fgtr);
+            }
         }
-        else
-        {
-            return this.fighters[0];
-        }
+
+        return this.returnBuffer.ToArray();
     }
 
     public Fighter[] GetOpposingTeam()
     {
-        if (this.fighterIndex == 0 || this.fighterIndex == 1)
+        Fighter currentFighter = this.fighters[this.fighterIndex];
+
+        Fighter[] team = null;
+        if (currentFighter.team == Team.PLAYERS)
         {
-            return this.enemyTeam;
+            team = this.enemyTeam;
+        }
+        else if (currentFighter.team == Team.ENEMIES)
+        {
+            team = this.playerTeam;
+        }
+
+        return this.FilterJustAlive(team);
+    }
+
+    public Fighter[] GetAllyTeam()
+    {
+        Fighter currentFighter = this.fighters[this.fighterIndex];
+
+        Fighter[] team = null;
+        if (currentFighter.team == Team.PLAYERS)
+        {
+            team = this.playerTeam;
         }
         else
         {
-            return this.playerTeam;
+            team = this.enemyTeam;
         }
+
+        return this.FilterJustAlive(team);
     }
 
     public void OnFighterSkill(Skill skill)

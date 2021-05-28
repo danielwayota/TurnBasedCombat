@@ -7,7 +7,7 @@ public class StatusModSkill : Skill
 
     protected StatusMod mod;
 
-    protected override void OnRun()
+    protected override void OnRun(Fighter receiver)
     {
         if (this.mod == null)
         {
@@ -15,8 +15,8 @@ public class StatusModSkill : Skill
         }
 
 
-        this.messages.Enqueue(this.message.Replace("{receiver}", this.receiver.idName));
+        this.messages.Enqueue(this.message.Replace("{receiver}", receiver.idName));
 
-        this.receiver.statusMods.Add(this.mod);
+        receiver.statusMods.Add(this.mod);
     }
 }

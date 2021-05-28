@@ -10,7 +10,7 @@ public class PlayerFighter : Fighter
 
     void Awake()
     {
-        this.stats = new Stats(21, 60, 50, 45, 20);
+        this.stats = new Stats(21, 60, 50, 45, 20, 20);
     }
 
     public override void InitTurn()
@@ -31,23 +31,25 @@ public class PlayerFighter : Fighter
     public void ExecuteSkill(int index)
     {
         this.skillToBeExecuted = this.skills[index];
+        this.skillToBeExecuted.SetEmitter(this);
 
-        if (this.skillToBeExecuted.selfInflicted)
+        if (this.skillToBeExecuted.needsManualTargeting)
         {
-            this.skillToBeExecuted.SetEmitterAndReceiver(this, this);
-            this.combatManager.OnFighterSkill(this.skillToBeExecuted);
-            this.skillPanel.Hide();
+            Fighter[] receivers = this.GetSkillTargets(this.skillToBeExecuted);
+            this.enemiesPanel.Show(this, receivers);
         }
         else
         {
-            Fighter[] enemies = this.combatManager.GetOpposingTeam();
-            this.enemiesPanel.Show(this, enemies);
+            this.AutoConfigureSkillTargeting(this.skillToBeExecuted);
+
+            this.combatManager.OnFighterSkill(this.skillToBeExecuted);
+            this.skillPanel.Hide();
         }
     }
 
     public void SetTargetAndAttack(Fighter enemyFigther)
     {
-        this.skillToBeExecuted.SetEmitterAndReceiver(this, enemyFigther);
+        this.skillToBeExecuted.AddReceiver(enemyFigther);
 
         this.combatManager.OnFighterSkill(this.skillToBeExecuted);
 
